@@ -1,6 +1,9 @@
 /* Copyright 2023 - Benjamin Vincent Schulenburg
  * Licensed under the AGPL3+, for the full text see /LICENSE
  */
+import type { mat4 } from "gl-matrix";
+import { TriangleMesh } from "./meshes";
+import type { Sprite } from "./sprite";
 const isPowerOf2 = (value: number) => (value & (value - 1)) === 0;
 
 type MaybeWebGLTexture = WebGLTexture | undefined;
@@ -20,6 +23,19 @@ export class Texture {
 	hasMipmap = false;
 	colors: number[] = [];
 	dirtyLUT = false;
+
+	sprites = new Set<Sprite>();
+	mesh: TriangleMesh;
+
+	draw(mvp: mat4) {
+		const mesh = this.mesh;
+		for (const s of this.sprites.values()) {
+			mesh.addQuad(s.x - s.w / 2, s.y - s.h / 2, s.w, s.h, 0, 0, 1, 1);
+		}
+		mesh.finish();
+		mesh.vertices.length = 0;
+		mesh.draw(mvp);
+	}
 
 	loadTexture2D(url: string) {
 		texturesInFlight++;
@@ -204,6 +220,7 @@ export class Texture {
 				this.nearest();
 				break;
 		}
+		this.mesh = new TriangleMesh(this);
 	}
 
 	target() {
