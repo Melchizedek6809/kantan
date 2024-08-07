@@ -16,5 +16,8 @@
     "typescript": "latest",
     "husky": "latest",
     "vite": "latest"
+  },
+  "dependencies": {
+    "gl-matrix": "latest"
   }
 }

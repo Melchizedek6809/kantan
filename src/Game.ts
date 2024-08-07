@@ -1,11 +1,18 @@
+import { WebGLRenderer } from "./render";
+
 export interface Options {}
 
 export class Game {
 	public canvas: HTMLCanvasElement;
-	public ctx: WebGL2RenderingContext;
 	public frames = 0;
+	public fps = 0;
+	private fpsCounter = 0;
+	private fpsLastUpdate = 0;
+	width = 640;
+	height = 400;
 
 	private _draw: () => void;
+	public readonly render: WebGLRenderer;
 
 	constructor(
 		public readonly wrap: HTMLElement,
@@ -16,25 +23,35 @@ export class Game {
 		this.canvas.height = 400;
 		wrap.append(this.canvas);
 
-		const ctx = this.canvas.getContext("webgl2");
-		if (!ctx) {
-			throw new Error("Can't create WebGL2 Context");
-		}
-		this.ctx = ctx;
+		this.render = new WebGLRenderer(this);
 
-		setTimeout(this.init.bind(this));
 		this._draw = this.draw.bind(this);
 		requestAnimationFrame(this._draw);
 	}
 
-	protected init() {}
-
 	protected draw() {
-		this.frames++;
 		requestAnimationFrame(this._draw);
+		this.frames++;
+		this.updateFPS();
+		this.render.draw();
+	}
 
-		const gl = this.ctx;
-		gl.clearColor(0.5, 0.5, Math.abs(Math.sin(this.frames * 0.03)), 1);
-		gl.clear(gl.COLOR_BUFFER_BIT);
+	private updateFPS() {
+		const now = +new Date();
+		this.fpsCounter++;
+		if (now > this.fpsLastUpdate + 1000) {
+			this.fpsLastUpdate = now;
+			this.fps = this.fpsCounter;
+			this.fpsCounter = 0;
+		}
+	}
+
+	protected resize() {
+		this.width = window.innerWidth | 0;
+		this.height = window.innerHeight | 0;
+		this.canvas.width = this.width;
+		this.canvas.height = this.height;
+
+		this.render.resize();
 	}
 }

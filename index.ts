@@ -1,4 +1,4 @@
-import { Game } from './src/Game';
+import { Game } from './src/game';
 
 const wrap = document.querySelector<HTMLElement>("#app");
 if(!wrap){
