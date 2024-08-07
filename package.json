@@ -1,0 +1,20 @@
+{
+  "name": "gameengine",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "check": "tsc -p ./tsconfig.json --noEmit",
+    "build": "tsc && vite build",
+    "format": "npx @biomejs/biome format --write ./src",
+    "prepare": "husky || true",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "typescript": "latest",
+    "husky": "latest",
+    "vite": "latest"
+  }
+}
