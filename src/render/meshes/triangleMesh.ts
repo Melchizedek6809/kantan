@@ -45,7 +45,7 @@ export class TriangleMesh {
 	}
 
 	constructor(texture: Texture) {
-		const vao = TriangleMesh.gl.createVertexArray();
+		const vao = texture.gl.createVertexArray();
 		if (!vao) {
 			throw new Error("Couldn't create VAO");
 		}
@@ -58,7 +58,6 @@ export class TriangleMesh {
 			const pos = obj.positions[f.positionIndex];
 			this.vertices.push(pos[0]);
 			this.vertices.push(pos[1]);
-			this.vertices.push(pos[2]);
 
 			if (f.textureCoordinateIndex === undefined) {
 				throw new Error("Missing texture coordinates");
@@ -66,8 +65,26 @@ export class TriangleMesh {
 			const tex = obj.textureCoordinates[f.textureCoordinateIndex];
 			this.vertices.push(tex[0]);
 			this.vertices.push(1.0 - tex[1]); // Gotta flip them
-			this.vertices.push(1.0); // Lightness
 		}
+	}
+
+	addQuad(
+		x: number,
+		y: number,
+		w: number,
+		h: number,
+		u: number,
+		v: number,
+		uw: number,
+		vh: number,
+	) {
+		this.vertices.push(x, y, u, v);
+		this.vertices.push(x + w, y + h, u + uw, v + vh);
+		this.vertices.push(x + w, y, u + uw, v);
+
+		this.vertices.push(x, y, u, v);
+		this.vertices.push(x, y + h, u, v + vh);
+		this.vertices.push(x + w, y + h, u + uw, v + vh);
 	}
 
 	finish() {
@@ -84,16 +101,14 @@ export class TriangleMesh {
 		const float_arr = new Float32Array(this.vertices);
 		gl.bufferData(gl.ARRAY_BUFFER, float_arr, gl.STATIC_DRAW);
 
-		gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 6 * 4, 0);
+		gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 4 * 4, 0);
 		gl.enableVertexAttribArray(0);
 
-		gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 6 * 4, 3 * 4);
+		gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 4 * 4, 2 * 4);
 		gl.enableVertexAttribArray(1);
 
-		gl.vertexAttribPointer(2, 1, gl.FLOAT, false, 6 * 4, 5 * 4);
-		gl.enableVertexAttribArray(2);
 		this.finished = true;
-		this.elementCount = this.vertices.length / 6;
+		this.elementCount = this.vertices.length / 4;
 	}
 
 	draw(mat_mvp: mat4) {

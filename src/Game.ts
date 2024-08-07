@@ -1,18 +1,20 @@
-import { WebGLRenderer } from "./render";
+import { Camera, WebGLRenderer } from "./render";
 
 export interface Options {}
 
 export class Game {
-	public canvas: HTMLCanvasElement;
-	public frames = 0;
-	public fps = 0;
-	private fpsCounter = 0;
-	private fpsLastUpdate = 0;
+	canvas: HTMLCanvasElement;
+	frames = 0;
+	fps = 0;
 	width = 640;
 	height = 400;
 
+	readonly render: WebGLRenderer;
+	cameraMain: Camera;
+
+	private fpsCounter = 0;
+	private fpsLastUpdate = 0;
 	private _draw: () => void;
-	public readonly render: WebGLRenderer;
 
 	constructor(
 		public readonly wrap: HTMLElement,
@@ -24,6 +26,7 @@ export class Game {
 		wrap.append(this.canvas);
 
 		this.render = new WebGLRenderer(this);
+		this.cameraMain = new Camera(this);
 
 		this._draw = this.draw.bind(this);
 		requestAnimationFrame(this._draw);
@@ -33,7 +36,7 @@ export class Game {
 		requestAnimationFrame(this._draw);
 		this.frames++;
 		this.updateFPS();
-		this.render.draw();
+		this.render.draw(this.cameraMain);
 	}
 
 	private updateFPS() {
