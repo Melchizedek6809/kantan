@@ -38,9 +38,9 @@ export class Game {
 			const fairy = new Sprite();
 			fairy.w = 64;
 			fairy.h = 64;
-			fairy.i = (Math.random() * 16) | 0;
-			fairy.ii = (Math.random() * this.render.testSprite.length) | 0;
-			fairy.texture = this.render.testSprite[fairy.ii];
+			fairy.i = (Math.random() * 4) | 0;
+			fairy.tile = (Math.random() * 4) | 0;
+			fairy.texture = this.render.testSprite;
 			fairy.x = Math.random() * 1600 + 100;
 			fairy.y = Math.random() * 900 + 100;
 			fairy.vx = (Math.random() - 0.5) * 3;
@@ -52,9 +52,8 @@ export class Game {
 	protected update() {
 		for (const f of this.fairies) {
 			if (--f.i < 0) {
-				f.i = 10;
-				f.ii = ++f.ii % 4;
-				f.texture = this.render.testSprite[f.ii == 3 ? 1 : f.ii];
+				f.i = 4;
+				f.tile = ++f.tile % 4;
 			}
 			f.x += f.vx;
 			f.y += f.vy;
@@ -82,9 +81,6 @@ export class Game {
 	protected draw() {
 		requestAnimationFrame(this._draw);
 		if (!document.hasFocus()) {
-			return;
-		}
-		if (!Texture.allLoaded()) {
 			return;
 		}
 		this.frames++;

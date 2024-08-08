@@ -3,13 +3,12 @@ import type { Game } from "../game";
 import type { Camera } from "./camera";
 import { TriangleMesh } from "./meshes";
 import { Texture } from "./texture";
-import { Sprite } from "./sprite";
 
 const mvp = mat4.create();
 
 export class WebGLRenderer {
 	public readonly gl: WebGL2RenderingContext;
-	public readonly testSprite: Texture[] = [];
+	public readonly testSprite: Texture;
 
 	constructor(public readonly game: Game) {
 		const gl = game.canvas.getContext("webgl2");
@@ -17,9 +16,9 @@ export class WebGLRenderer {
 			throw new Error("Can't create WebGL2 context");
 		}
 		this.gl = gl;
-		this.testSprite.push(new Texture(gl, "fairy_0", "/fairy_0.png", "2D"));
-		this.testSprite.push(new Texture(gl, "fairy_1", "/fairy_1.png", "2D"));
-		this.testSprite.push(new Texture(gl, "fairy_2", "/fairy_2.png", "2D"));
+		this.testSprite = new Texture(gl, "fairy", "/fairy.png", "2D");
+		this.testSprite.widthInTiles = 2;
+		this.testSprite.heightInTiles = 2;
 		this.initGLContext();
 	}
 
@@ -38,9 +37,7 @@ export class WebGLRenderer {
 		const gl = this.gl;
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		cam.matrixOrtho(mvp);
-		for (const tex of this.testSprite) {
-			tex.draw(mvp);
-		}
+		this.testSprite.draw(mvp);
 	}
 
 	resize() {

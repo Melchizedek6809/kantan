@@ -22,6 +22,9 @@ export class Texture {
 	colors: number[] = [];
 	dirtyLUT = false;
 
+	widthInTiles = 1;
+	heightInTiles = 1;
+
 	sprites = new Set<Sprite>();
 	mesh: TriangleMesh;
 
@@ -31,8 +34,12 @@ export class Texture {
 
 	draw(mvp: mat4) {
 		const mesh = this.mesh;
+		const uw = 1 / this.widthInTiles;
+		const vh = 1 / this.heightInTiles;
 		for (const s of this.sprites.values()) {
-			mesh.addQuad(s.x - s.w / 2, s.y - s.h / 2, s.w, s.h, 0, 0, 1, 1);
+			const u = ((s.tile % this.widthInTiles) | 0) * uw;
+			const v = ((s.tile / this.widthInTiles) | 0) * vh;
+			mesh.addQuad(s.x - s.w / 2, s.y - s.h / 2, s.w, s.h, u, v, uw, vh);
 		}
 		mesh.finish();
 		mesh.vertices.length = 0;
@@ -46,8 +53,8 @@ export class Texture {
 
 		const level = 0;
 		const internalFormat = gl.RGBA;
-		const width = 1;
-		const height = 1;
+		const width = 2;
+		const height = 2;
 		const border = 0;
 		const srcFormat = gl.RGBA;
 		const srcType = gl.UNSIGNED_BYTE;
