@@ -104,14 +104,14 @@ export class TriangleMesh {
 		const ax = Math.cos(r) * d;
 		const ay = Math.sin(r) * d;
 
-		const bx = Math.cos(r + Math.PI * 0.5) * d;
-		const by = Math.sin(r + Math.PI * 0.5) * d;
+		const bx = -ay;
+		const by = ax;
 
-		const cx = Math.cos(r + Math.PI * 1.5) * d;
-		const cy = Math.sin(r + Math.PI * 1.5) * d;
+		const cx = ay;
+		const cy = -ax;
 
-		const dx = Math.cos(r + Math.PI) * d;
-		const dy = Math.sin(r + Math.PI) * d;
+		const dx = -ax;
+		const dy = -ay;
 
 		this.vertices.push(x + ax, y + ay, u, v);
 		this.vertices.push(x + dx, y + dy, u + uw, v + vh);

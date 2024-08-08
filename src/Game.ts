@@ -34,7 +34,7 @@ export class Game {
 		this._draw = this.draw.bind(this);
 		requestAnimationFrame(this._draw);
 
-		for (let i = 0; i < 256; i++) {
+		for (let i = 0; i < 256 * 4; i++) {
 			const fairy = new Sprite();
 			fairy.w = 64;
 			fairy.h = 64;
@@ -44,8 +44,8 @@ export class Game {
 			fairy.texture = this.render.testSprite;
 			fairy.x = Math.random() * 1600 + 100;
 			fairy.y = Math.random() * 900 + 100;
-			fairy.vx = (Math.random() - 0.5) * 3;
-			fairy.vy = (Math.random() - 0.5) * 3;
+			fairy.vx = (Math.random() - 0.5) * 5;
+			fairy.vy = (Math.random() - 0.5) * 5;
 			this.fairies.push(fairy);
 		}
 	}
@@ -59,23 +59,24 @@ export class Game {
 			f.r += 0.05;
 			f.x += f.vx;
 			f.y += f.vy;
+			f.vy += 0.1;
 
 			if (f.x < 32) {
 				f.x = 32;
-				f.vx *= -1;
+				f.vx *= -0.9;
 			}
 			if (f.x > this.width - 32) {
 				f.x = this.width - 32;
-				f.vx *= -1;
+				f.vx *= -0.9;
 			}
 
 			if (f.y < 32) {
 				f.y = 32;
-				f.vy *= -1;
+				f.vy *= -0.9;
 			}
 			if (f.y > this.height - 32) {
 				f.y = this.height - 32;
-				f.vy *= -1;
+				f.vy *= -0.9;
 			}
 		}
 	}
