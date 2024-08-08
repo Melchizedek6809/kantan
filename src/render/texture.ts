@@ -39,7 +39,7 @@ export class Texture {
 		for (const s of this.sprites.values()) {
 			const u = ((s.tile % this.widthInTiles) | 0) * uw;
 			const v = ((s.tile / this.widthInTiles) | 0) * vh;
-			mesh.addQuad(s.x - s.w / 2, s.y - s.h / 2, s.w, s.h, u, v, uw, vh);
+			mesh.addQuadRot(s.x, s.y, s.w, s.h, u, v, uw, vh, s.r);
 		}
 		mesh.finish();
 		mesh.vertices.length = 0;

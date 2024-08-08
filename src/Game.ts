@@ -34,10 +34,11 @@ export class Game {
 		this._draw = this.draw.bind(this);
 		requestAnimationFrame(this._draw);
 
-		for (let i = 0; i < 1024; i++) {
+		for (let i = 0; i < 256; i++) {
 			const fairy = new Sprite();
 			fairy.w = 64;
 			fairy.h = 64;
+			fairy.r = Math.random() * Math.PI;
 			fairy.i = (Math.random() * 4) | 0;
 			fairy.tile = (Math.random() * 4) | 0;
 			fairy.texture = this.render.testSprite;
@@ -55,6 +56,7 @@ export class Game {
 				f.i = 4;
 				f.tile = ++f.tile % 4;
 			}
+			f.r += 0.05;
 			f.x += f.vx;
 			f.y += f.vy;
 

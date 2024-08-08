@@ -87,6 +87,41 @@ export class TriangleMesh {
 		this.vertices.push(x + w, y + h, u + uw, v + vh);
 	}
 
+	addQuadRot(
+		x: number,
+		y: number,
+		w: number,
+		h: number,
+		u: number,
+		v: number,
+		uw: number,
+		vh: number,
+		r: number,
+	) {
+		const s = w * 0.5;
+		const d = Math.sqrt(s * s + s * s);
+
+		const ax = Math.cos(r) * d;
+		const ay = Math.sin(r) * d;
+
+		const bx = Math.cos(r + Math.PI * 0.5) * d;
+		const by = Math.sin(r + Math.PI * 0.5) * d;
+
+		const cx = Math.cos(r + Math.PI * 1.5) * d;
+		const cy = Math.sin(r + Math.PI * 1.5) * d;
+
+		const dx = Math.cos(r + Math.PI) * d;
+		const dy = Math.sin(r + Math.PI) * d;
+
+		this.vertices.push(x + ax, y + ay, u, v);
+		this.vertices.push(x + dx, y + dy, u + uw, v + vh);
+		this.vertices.push(x + bx, y + by, u + uw, v);
+
+		this.vertices.push(x + ax, y + ay, u, v);
+		this.vertices.push(x + cx, y + cy, u, v + vh);
+		this.vertices.push(x + dx, y + dy, u + uw, v + vh);
+	}
+
 	finish() {
 		const gl = TriangleMesh.gl;
 

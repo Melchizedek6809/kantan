@@ -8,6 +8,7 @@ export class Sprite {
 	y = 0;
 	w = 0;
 	h = 0;
+	r = 0;
 
 	vx = 0;
 	vy = 0;
