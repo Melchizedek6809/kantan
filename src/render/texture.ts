@@ -13,8 +13,6 @@ let activeTextureUnit = 0;
 let texturesInFlight = 0;
 let texturesLoaded = 0;
 
-export const allTexturesLoaded = () => texturesLoaded >= texturesInFlight;
-
 export class Texture {
 	readonly name: string;
 	readonly texture: WebGLTexture;
@@ -26,6 +24,10 @@ export class Texture {
 
 	sprites = new Set<Sprite>();
 	mesh: TriangleMesh;
+
+	static allLoaded(): boolean {
+		return texturesLoaded >= texturesInFlight;
+	}
 
 	draw(mvp: mat4) {
 		const mesh = this.mesh;

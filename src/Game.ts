@@ -1,4 +1,4 @@
-import { Camera, Sprite, WebGLRenderer } from "./render";
+import { Camera, Sprite, Texture, WebGLRenderer } from "./render";
 
 export interface Options {}
 
@@ -82,6 +82,9 @@ export class Game {
 	protected draw() {
 		requestAnimationFrame(this._draw);
 		if (!document.hasFocus()) {
+			return;
+		}
+		if (!Texture.allLoaded()) {
 			return;
 		}
 		this.frames++;
