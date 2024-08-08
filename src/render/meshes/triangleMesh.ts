@@ -101,8 +101,9 @@ export class TriangleMesh {
 		const s = w * 0.5;
 		const d = Math.sqrt(s * s + s * s);
 
-		const ax = Math.cos(r) * d;
-		const ay = Math.sin(r) * d;
+		const off = Math.PI * (1 / 4) * 3;
+		const ax = Math.cos(r - off) * d;
+		const ay = Math.sin(r - off) * d;
 
 		const bx = -ay;
 		const by = ax;
