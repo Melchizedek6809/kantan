@@ -1,3 +1,6 @@
+/* Copyright 202X - Benjamin Vincent Schulenburg
+ * Licensed under the MIT license, for the full text see: /LICENSE
+ */
 import { mat4 } from "gl-matrix";
 import type { Game } from "../game";
 import type { Camera } from "./camera";

@@ -1,5 +1,5 @@
-/* Copyright 2024 - Benjamin Vincent Schulenburg
- * Licensed under the MIT license, for the full text see /LICENSE
+/* Copyright 202X - Benjamin Vincent Schulenburg
+ * Licensed under the MIT license, for the full text see: /LICENSE
  */
 import { mat4 } from "gl-matrix";
 

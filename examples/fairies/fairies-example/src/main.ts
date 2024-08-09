@@ -9,12 +9,13 @@ export class Fairy extends Sprite {
 		this.h = 128;
 		this.texture = tex;
 		this.r = Math.random() * Math.PI*2;
-		this.i = (Math.random() * 4) | 0;
 		this.tile = (Math.random() * 4) | 0;
 		this.x = Math.random() * 1600 + 100;
 		this.y = Math.random() * 900 + 100;
 		this.vx = (Math.random() - 0.5) * 5;
 		this.vy = (Math.random() - 0.5) * 5;
+
+		this.i = (Math.random() * 4) | 0;
 	}
 
 	update() {

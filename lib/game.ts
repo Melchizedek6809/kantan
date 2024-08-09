@@ -1,3 +1,6 @@
+/* Copyright 202X - Benjamin Vincent Schulenburg
+ * Licensed under the MIT license, for the full text see: /LICENSE
+ */
 import { Camera, Sprite, WebGLRenderer } from "./render";
 
 export class Game {

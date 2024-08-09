@@ -1,5 +1,5 @@
-/* Copyright 2023 - Benjamin Vincent Schulenburg
- * Licensed under the AGPL3+, for the full text see /LICENSE
+/* Copyright 202X - Benjamin Vincent Schulenburg
+ * Licensed under the MIT license, for the full text see: /LICENSE
  */
 import type { mat4 } from "gl-matrix";
 import type { Sprite } from "./sprite";
@@ -17,11 +17,9 @@ let texturesLoaded = 0;
 export class Texture {
 	readonly name: string;
 	readonly texture: WebGLTexture;
-	readonly type: "2D" | "2DArray" | "LUT";
+	readonly type: "2D" | "2DArray";
 	readonly renderer: WebGLRenderer;
 	hasMipmap = false;
-	colors: number[] = [];
-	dirtyLUT = false;
 
 	widthInTiles = 1;
 	heightInTiles = 1;
@@ -31,6 +29,39 @@ export class Texture {
 
 	static allLoaded(): boolean {
 		return texturesLoaded >= texturesInFlight;
+	}
+
+	constructor(
+		renderer: WebGLRenderer,
+		name: string,
+		url: string,
+		type: "2D" | "2DArray" = "2D",
+		widthInTiles = 1,
+		heightInTiles = 1,
+	) {
+		this.renderer = renderer;
+		this.name = name;
+		this.type = type;
+		this.widthInTiles = widthInTiles;
+		this.heightInTiles = heightInTiles;
+
+		const gl = this.renderer.gl;
+		const texture = gl.createTexture();
+		if (!texture) {
+			throw new Error(`Couldn't create texture for ${name}`);
+		}
+		this.texture = texture;
+		switch (type) {
+			default:
+			case "2D":
+				this.loadTexture2D(url);
+				break;
+			case "2DArray":
+				this.loadTexture2DArray(url);
+				break;
+		}
+		this.mesh = new TriangleMesh(this);
+		renderer.textures.add(this);
 	}
 
 	draw(mvp: mat4) {
@@ -160,89 +191,6 @@ export class Texture {
 		image.src = url;
 	}
 
-	updateLUT() {
-		const gl = this.renderer.gl;
-		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(this.target(), this.texture);
-		lastBoundTexture[0] = this.texture;
-
-		const level = 0;
-		const internalFormat = gl.RGBA;
-		const width = 256;
-		const height = 1;
-		const border = 0;
-		const srcFormat = gl.RGBA;
-		const srcType = gl.UNSIGNED_BYTE;
-		const pixel = new Uint8Array(this.colors);
-		gl.texImage2D(
-			gl.TEXTURE_2D,
-			level,
-			internalFormat,
-			width,
-			height,
-			border,
-			srcFormat,
-			srcType,
-			pixel,
-		);
-		this.dirtyLUT = false;
-	}
-
-	createLUT() {
-		for (let i = 0; i < 256; i++) {
-			this.colors.push(255 * (i & 1), 48, 128, 255);
-		}
-		this.updateLUT();
-	}
-
-	setLUTEntry(i: number, color: number) {
-		const off = (i - 1) * 4;
-		this.colors[off] = color & 0xff;
-		this.colors[off + 1] = (color >> 8) & 0xff;
-		this.colors[off + 2] = (color >> 16) & 0xff;
-		this.colors[off + 3] = 0xff;
-
-		this.dirtyLUT = true;
-	}
-
-	constructor(
-		renderer: WebGLRenderer,
-		name: string,
-		url: string,
-		type: "2D" | "2DArray" | "LUT" = "2D",
-		widthInTiles = 1,
-		heightInTiles = 1,
-	) {
-		this.renderer = renderer;
-		this.name = name;
-		this.type = type;
-		this.widthInTiles = widthInTiles;
-		this.heightInTiles = heightInTiles;
-
-		const gl = this.renderer.gl;
-		const texture = gl.createTexture();
-		if (!texture) {
-			throw new Error(`Couldn't create texture for ${name}`);
-		}
-		this.texture = texture;
-		switch (type) {
-			default:
-			case "2D":
-				this.loadTexture2D(url);
-				break;
-			case "2DArray":
-				this.loadTexture2DArray(url);
-				break;
-			case "LUT":
-				this.bind();
-				this.createLUT();
-				this.nearest();
-				break;
-		}
-		this.mesh = new TriangleMesh(this);
-		renderer.textures.add(this);
-	}
-
 	target() {
 		return this.type === "2DArray"
 			? this.renderer.gl.TEXTURE_2D_ARRAY
@@ -299,13 +247,6 @@ export class Texture {
 
 	bind(unit = 0) {
 		const gl = this.renderer.gl;
-		if (this.dirtyLUT) {
-			this.updateLUT();
-			activeTextureUnit = unit;
-			lastBoundTexture[unit] = this.texture;
-			gl.activeTexture(gl.TEXTURE0 + unit);
-			gl.bindTexture(this.target(), this.texture);
-		}
 		if (lastBoundTexture[unit] !== this.texture) {
 			lastBoundTexture[unit] = this.texture;
 			if (unit !== activeTextureUnit) {
