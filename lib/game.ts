@@ -1,7 +1,7 @@
 /* Copyright 202X - Benjamin Vincent Schulenburg
  * Licensed under the MIT license, for the full text see: /LICENSE
  */
-import { Camera, Sprite, WebGLRenderer } from "./render";
+import { Camera, Sprite, Texture, WebGLRenderer } from "./render";
 
 export class Game {
 	canvas: HTMLCanvasElement;
@@ -23,7 +23,7 @@ export class Game {
 		wrap.append(this.canvas);
 
 		this.render = new WebGLRenderer(this);
-		this.cameraMain = new Camera();
+		this.cameraMain = new Camera(this);
 		window.addEventListener("resize", this.resize.bind(this));
 		setTimeout(this.resize.bind(this));
 
@@ -40,6 +40,9 @@ export class Game {
 	protected draw() {
 		requestAnimationFrame(this._draw);
 		if (!document.hasFocus()) {
+			return;
+		}
+		if (!Texture.allLoaded()) {
 			return;
 		}
 		this.frames++;
@@ -69,5 +72,6 @@ export class Game {
 		this.cameraMain.height = this.height;
 
 		this.render.resize();
+		this.cameraMain.resize();
 	}
 }

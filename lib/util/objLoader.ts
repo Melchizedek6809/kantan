@@ -8,16 +8,13 @@ export interface WavefrontObjectFace {
 }
 
 export class WavefrontObject {
-	name: string;
 	positions: [number, number, number][] = [];
 	textureCoordinates: [number, number][] = [];
 	normals: [number, number, number][] = [];
 	faces: WavefrontObjectFace[] = [];
 	smoothShading = false;
 
-	constructor(name: string) {
-		this.name = name;
-	}
+	constructor(public readonly name: string) {}
 }
 
 export class WavefrontFile {
