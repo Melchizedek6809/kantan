@@ -2,6 +2,7 @@ import type { Game } from "../game";
 import type { Texture } from "./texture";
 
 export class Sprite {
+	static set = new Set<Sprite>();
 	private _texture?: Texture;
 	private _game?: Game;
 	x = 0;
@@ -40,5 +41,18 @@ export class Sprite {
 
 	get game(): Game | undefined {
 		return this._game;
+	}
+
+	constructor() {
+		Sprite.set.add(this);
+	}
+
+	public destroy() {
+		Sprite.set.delete(this);
+	}
+
+	public update() {
+		this.x += this.vx;
+		this.y += this.vy;
 	}
 }

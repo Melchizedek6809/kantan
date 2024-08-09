@@ -28,7 +28,11 @@ export class Game {
 		requestAnimationFrame(this._draw);
 	}
 
-	protected update() {}
+	protected update() {
+		for (const s of Sprite.set.values()) {
+			s.update();
+		}
+	}
 
 	protected draw() {
 		requestAnimationFrame(this._draw);

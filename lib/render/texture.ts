@@ -210,10 +210,14 @@ export class Texture {
 		name: string,
 		url: string,
 		type: "2D" | "2DArray" | "LUT" = "2D",
+		widthInTiles = 1,
+		heightInTiles = 1,
 	) {
 		this.renderer = renderer;
 		this.name = name;
 		this.type = type;
+		this.widthInTiles = widthInTiles;
+		this.heightInTiles = heightInTiles;
 
 		const gl = this.renderer.gl;
 		const texture = gl.createTexture();
