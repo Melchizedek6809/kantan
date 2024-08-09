@@ -45,7 +45,7 @@ export class TriangleMesh {
 	}
 
 	constructor(texture: Texture) {
-		const vao = texture.gl.createVertexArray();
+		const vao = texture.renderer.gl.createVertexArray();
 		if (!vao) {
 			throw new Error("Couldn't create VAO");
 		}
@@ -98,8 +98,9 @@ export class TriangleMesh {
 		vh: number,
 		r: number,
 	) {
-		const s = w * 0.5;
-		const d = Math.sqrt(s * s + s * s);
+		const sw = w * 0.5;
+		const sh = h * 0.5;
+		const d = Math.sqrt(sw * sw + sh * sh);
 
 		const off = Math.PI * (1 / 4) * 3;
 		const ax = Math.cos(r - off) * d;

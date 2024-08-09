@@ -13,7 +13,6 @@ export class Sprite {
 	vx = 0;
 	vy = 0;
 	tile = 0;
-	i = 0;
 
 	set texture(texture: Texture | undefined) {
 		if (this._texture) {
