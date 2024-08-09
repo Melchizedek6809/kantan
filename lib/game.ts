@@ -1,4 +1,4 @@
-import { Camera, Sprite, Texture, WebGLRenderer } from "./render";
+import { Camera, Sprite, WebGLRenderer } from "./render";
 
 export interface Options {}
 

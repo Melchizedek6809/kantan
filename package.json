@@ -7,7 +7,7 @@
     "dev": "vite",
     "check": "tsc -p ./tsconfig.json --noEmit",
     "build": "tsc && vite build",
-    "format": "npx @biomejs/biome format --write ./src",
+    "format": "npx @biomejs/biome format --write ./lib",
     "prepare": "husky || true",
     "preview": "vite preview"
   },
