@@ -23,7 +23,6 @@ export class WebGLRenderer {
 	}
 
 	initGLContext() {
-		//this.gl.enable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.CULL_FACE);
 		this.gl.enable(this.gl.BLEND);
 		this.gl.cullFace(this.gl.BACK);
@@ -37,6 +36,12 @@ export class WebGLRenderer {
 		const gl = this.gl;
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		cam.matrixOrtho(mvp);
+		/*
+		ToDo: We actually need to determine all Z Coords used,
+		then sort all drawables by that, and then group and draw by texture used.
+		
+		Doing all this while not allocatino anything might be tricky.
+		*/
 		for (const t of this.textures.values()) {
 			t.draw(mvp);
 		}
