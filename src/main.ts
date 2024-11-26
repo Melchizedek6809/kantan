@@ -57,7 +57,7 @@ export class Fairy extends Sprite {
 	}
 
 	collide() {
-		this.game.audio.play("/sfx/pickupCoin.mp3");
+		this.game.audio.play("sfx/pickupCoin.mp3");
 	}
 }
 
@@ -70,7 +70,7 @@ export class Example extends Game {
 		this.testSprite = new Texture(
 			this.render,
 			"fairy",
-			"/gfx/fairy.png",
+			"gfx/fairy.png",
 			"2D",
 			2,
 			2,
