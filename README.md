@@ -1,6 +1,7 @@
-# Unnamed Game Engine
+# 簡単 Game Engine
 
 Still very buggy, though I'm trying to improve/stabilize it one GameJam at a time.
+In order to use this just fork/clone this repo and start coding.
 
 ## Why?
 
