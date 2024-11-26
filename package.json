@@ -13,11 +13,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "latest",
+    "@types/howler": "latest",
     "typescript": "latest",
     "husky": "latest",
     "vite": "latest"
   },
   "dependencies": {
-    "gl-matrix": "latest"
+    "gl-matrix": "latest",
+    "howler": "latest"
   }
 }

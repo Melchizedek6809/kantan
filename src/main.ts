@@ -3,8 +3,8 @@ import { Game, Sprite, Texture } from "./lib";
 export class Fairy extends Sprite {
 	i = 0;
 
-	constructor(tex: Texture) {
-		super();
+	constructor(game: Game, tex: Texture) {
+		super(game);
 		this.w = 128;
 		this.h = 128;
 		this.texture = tex;
@@ -36,20 +36,28 @@ export class Fairy extends Sprite {
 		if (this.x < 32) {
 			this.x = 32;
 			this.vx *= -0.9;
+			this.collide();
 		}
 		if (this.x > game.width - 32) {
 			this.x = game.width - 32;
 			this.vx *= -0.9;
+			this.collide();
 		}
 
 		if (this.y < 32) {
 			this.y = 32;
 			this.vy *= -0.9;
+			this.collide();
 		}
 		if (this.y > game.height - 32) {
 			this.y = game.height - 32;
 			this.vy *= -0.9;
+			this.collide();
 		}
+	}
+
+	collide() {
+		this.game.audio.play("/sfx/pickupCoin.mp3");
 	}
 }
 
@@ -62,13 +70,14 @@ export class Example extends Game {
 		this.testSprite = new Texture(
 			this.render,
 			"fairy",
-			"/fairy.png",
+			"/gfx/fairy.png",
 			"2D",
 			2,
 			2,
 		);
+
 		for (let i = 0; i < 256; i++) {
-			new Fairy(this.testSprite);
+			new Fairy(this, this.testSprite);
 		}
 	}
 }

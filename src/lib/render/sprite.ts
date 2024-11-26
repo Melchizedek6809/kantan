@@ -8,7 +8,7 @@ export class Sprite {
 	static set = new Set<Sprite>();
 
 	private _texture?: Texture;
-	private _game?: Game;
+	readonly game: Game;
 
 	x = 0;
 	y = 0;
@@ -36,21 +36,9 @@ export class Sprite {
 		return this._texture;
 	}
 
-	set game(game: Game | undefined) {
-		if (this._game) {
-			this._game.sprites.delete(this);
-		}
-		this._game = game;
-		if (game) {
-			game.sprites.add(this);
-		}
-	}
-
-	get game(): Game | undefined {
-		return this._game;
-	}
-
-	constructor() {
+	constructor(game: Game) {
+		this.game = game;
+		this.game.sprites.add(this);
 		Sprite.set.add(this);
 	}
 
