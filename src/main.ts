@@ -1,6 +1,6 @@
 import { Game, Sprite, Texture } from "./lib";
-import fairyAsset from "./gfx/fairy.png";
-import pickupCoinAsset from "./sfx/pickupCoin.mp3";
+import fairyAsset from "../gfx/fairy.png";
+import pickupCoinAsset from "../sfx/pickupCoin.mp3";
 
 export class Fairy extends Sprite {
 	i = 0;
