@@ -1,4 +1,4 @@
-import { Game, Sprite, Texture } from 'gameEngine';
+import { Game, Sprite, Texture } from "./lib";
 
 export class Fairy extends Sprite {
 	i = 0;
@@ -8,7 +8,7 @@ export class Fairy extends Sprite {
 		this.w = 128;
 		this.h = 128;
 		this.texture = tex;
-		this.r = Math.random() * Math.PI*2;
+		this.r = Math.random() * Math.PI * 2;
 		this.tile = (Math.random() * 4) | 0;
 		this.x = Math.random() * 1600 + 100;
 		this.y = Math.random() * 900 + 100;
@@ -22,7 +22,9 @@ export class Fairy extends Sprite {
 		super.update();
 
 		const game = this.texture?.renderer.game;
-		if(!game){return;}
+		if (!game) {
+			return;
+		}
 
 		if (--this.i < 0) {
 			this.i = 4;
@@ -54,12 +56,17 @@ export class Fairy extends Sprite {
 export class Example extends Game {
 	public readonly testSprite: Texture;
 
-	constructor(
-		public readonly wrap: HTMLElement,
-	) {
+	constructor(public readonly wrap: HTMLElement) {
 		super(wrap);
 
-		this.testSprite = new Texture(this.render, "fairy", "/fairy.png", "2D", 2, 2);
+		this.testSprite = new Texture(
+			this.render,
+			"fairy",
+			"/fairy.png",
+			"2D",
+			2,
+			2,
+		);
 		for (let i = 0; i < 256; i++) {
 			new Fairy(this.testSprite);
 		}
@@ -67,7 +74,7 @@ export class Example extends Game {
 }
 
 const wrap = document.querySelector<HTMLElement>("#app");
-if(!wrap){
+if (!wrap) {
 	throw new Error("Can't query #app wrapper");
 } else {
 	new Example(wrap);
