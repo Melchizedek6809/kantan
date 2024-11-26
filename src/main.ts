@@ -1,4 +1,6 @@
 import { Game, Sprite, Texture } from "./lib";
+import fairyAsset from "./gfx/fairy.png";
+import pickupCoinAsset from "./sfx/pickupCoin.mp3";
 
 export class Fairy extends Sprite {
 	i = 0;
@@ -57,7 +59,7 @@ export class Fairy extends Sprite {
 	}
 
 	collide() {
-		this.game.audio.play("sfx/pickupCoin.mp3");
+		this.game.audio.play(pickupCoinAsset);
 	}
 }
 
@@ -67,14 +69,7 @@ export class Example extends Game {
 	constructor(public readonly wrap: HTMLElement) {
 		super(wrap);
 
-		this.testSprite = new Texture(
-			this.render,
-			"fairy",
-			"gfx/fairy.png",
-			"2D",
-			2,
-			2,
-		);
+		this.testSprite = new Texture(this.render, "fairy", fairyAsset, "2D", 2, 2);
 
 		for (let i = 0; i < 256; i++) {
 			new Fairy(this, this.testSprite);
