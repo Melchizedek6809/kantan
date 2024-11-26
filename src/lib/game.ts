@@ -2,6 +2,8 @@
  * Licensed under the MIT license, for the full text see: /LICENSE
  */
 import { Camera, Sprite, Texture, WebGLRenderer } from "./render";
+import { InputContext } from "./input";
+import { AudioContext } from "./audio";
 
 export class Game {
 	canvas: HTMLCanvasElement;
@@ -11,6 +13,8 @@ export class Game {
 	height = 400;
 
 	readonly render: WebGLRenderer;
+	readonly input: InputContext;
+	readonly audio: AudioContext;
 	cameraMain: Camera;
 
 	private fpsCounter = 0;
@@ -22,6 +26,8 @@ export class Game {
 		this.canvas = document.createElement("canvas");
 		wrap.append(this.canvas);
 
+		this.input = new InputContext(this);
+		this.audio = new AudioContext(this);
 		this.render = new WebGLRenderer(this);
 		this.cameraMain = new Camera(this);
 		window.addEventListener("resize", this.resize.bind(this));
