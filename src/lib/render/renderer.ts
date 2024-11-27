@@ -27,7 +27,7 @@ export class WebGLRenderer {
 		this.gl.enable(this.gl.BLEND);
 		this.gl.cullFace(this.gl.BACK);
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-		this.gl.clearColor(0.09, 0.478, 1, 1);
+		this.gl.clearColor(0.09, 0.48, 1, 1);
 
 		TriangleMesh.init(this.gl);
 	}
