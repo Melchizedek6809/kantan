@@ -8,7 +8,6 @@ import shaderVertSource from "./triangleMesh.vert?raw";
 
 import type { Texture } from "../texture";
 import { Shader } from "../shader";
-import { WavefrontFile, WavefrontObject } from "../../util/objLoader";
 
 export class TriangleMesh {
 	static gl: WebGL2RenderingContext;
@@ -24,14 +23,6 @@ export class TriangleMesh {
 		y: 0,
 		z: 0,
 	};
-
-	static fromObjFile(objSource: string, tex: Texture): TriangleMesh {
-		const mesh = new TriangleMesh(tex);
-		const obj = new WavefrontFile(objSource);
-		mesh.addObj(obj.objects[0]);
-		mesh.finish();
-		return mesh;
-	}
 
 	static init(glc: WebGL2RenderingContext) {
 		this.gl = glc;
@@ -51,21 +42,6 @@ export class TriangleMesh {
 		}
 		this.vao = vao;
 		this.texture = texture;
-	}
-
-	addObj(obj: WavefrontObject) {
-		for (const f of obj.faces) {
-			const pos = obj.positions[f.positionIndex];
-			this.vertices.push(pos[0]);
-			this.vertices.push(pos[1]);
-
-			if (f.textureCoordinateIndex === undefined) {
-				throw new Error("Missing texture coordinates");
-			}
-			const tex = obj.textureCoordinates[f.textureCoordinateIndex];
-			this.vertices.push(tex[0]);
-			this.vertices.push(1.0 - tex[1]); // Gotta flip them
-		}
 	}
 
 	addQuad(

@@ -1,1 +1,1 @@
-export * from "./objLoader";
+export * from "./math";
