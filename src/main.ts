@@ -28,34 +28,60 @@ export class Fairy extends Sprite {
 			return;
 		}
 
+		// Animation update
 		if (--this.i < 0) {
 			this.i = 4;
 			this.tile = ++this.tile % 4;
 		}
+
+		// Rotation and gravity
 		this.r += 0.05;
 		this.vy += 0.1;
 
-		if (this.x < 32) {
-			this.x = 32;
-			this.vx *= -0.9;
-			this.collide();
-		}
-		if (this.x > game.width - 32) {
-			this.x = game.width - 32;
-			this.vx *= -0.9;
-			this.collide();
+		// Handle boundary collisions
+		this.handleBoundaryCollisions(game);
+	}
+
+	/**
+	 * Handles collisions with screen boundaries
+	 */
+	private handleBoundaryCollisions(game: Game) {
+		const MARGIN = 32;
+		const BOUNCE_FACTOR = -0.9;
+
+		// Check horizontal boundaries
+		if (this.x < MARGIN) {
+			this.x = MARGIN;
+			this.bounceX(BOUNCE_FACTOR);
+		} else if (this.x > game.width - MARGIN) {
+			this.x = game.width - MARGIN;
+			this.bounceX(BOUNCE_FACTOR);
 		}
 
-		if (this.y < 32) {
-			this.y = 32;
-			this.vy *= -0.9;
-			this.collide();
+		// Check vertical boundaries
+		if (this.y < MARGIN) {
+			this.y = MARGIN;
+			this.bounceY(BOUNCE_FACTOR);
+		} else if (this.y > game.height - MARGIN) {
+			this.y = game.height - MARGIN;
+			this.bounceY(BOUNCE_FACTOR);
 		}
-		if (this.y > game.height - 32) {
-			this.y = game.height - 32;
-			this.vy *= -0.9;
-			this.collide();
-		}
+	}
+
+	/**
+	 * Bounce on the X axis with the given factor
+	 */
+	private bounceX(factor: number) {
+		this.vx *= factor;
+		this.collide();
+	}
+
+	/**
+	 * Bounce on the Y axis with the given factor
+	 */
+	private bounceY(factor: number) {
+		this.vy *= factor;
+		this.collide();
 	}
 
 	collide() {
@@ -71,9 +97,18 @@ export class Example extends Game {
 
 		this.testSprite = new Texture(this.render, "fairy", fairyAsset, "2D", 2, 2);
 
-		for (let i = 0; i < 256; i++) {
+		// Create fewer fairies for better performance
+		const FAIRY_COUNT = 100;
+		for (let i = 0; i < FAIRY_COUNT; i++) {
 			new Fairy(this, this.testSprite);
 		}
+
+		console.log(`Created ${FAIRY_COUNT} fairies`);
+	}
+
+	// Override the variableUpdate method to add custom behavior if needed
+	protected override variableUpdate(_deltaTime: number): void {
+		// Add any frame-rate independent updates here
 	}
 }
 
